@@ -56,3 +56,11 @@ def update_transaction(transaction_id: int, update: TransactionUpdate):
         return data.data
     else:
         raise HTTPException(status_code=404, detail="Transaction not found")
+
+@app.put("/transactions/{transaction_id}")
+def delete_item(transaction_id: int):
+    data = supabase.table("df").delete().eq("transaction_id", transaction_id).execute()
+    if data.data:
+        return {"message": "Transaction deleted successfully"}
+    else:
+        raise HTTPException(status_code=404, detail="Transaction not found")
