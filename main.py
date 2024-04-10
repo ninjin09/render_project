@@ -29,7 +29,7 @@ class TransactionUpdate(BaseModel):
     product_category: str
     product_type: str
     size: str
-    
+
 @app.get("/transactions/")
 def read_items():
     data = supabase.table("df").select("*").order("transaction_id", desc=True).limit(10).execute()
@@ -48,7 +48,6 @@ def create_transaction(transaction: Transaction):
     else:
         raise HTTPException(status_code=400, detail="Transaction could not be created")
 
-
 @app.put("/transactions/{transaction_id}")
 def update_transaction(transaction_id: int, update: TransactionUpdate):
     data = supabase.table("df").update(update.dict()).eq("transaction_id", transaction_id).execute()
@@ -57,10 +56,11 @@ def update_transaction(transaction_id: int, update: TransactionUpdate):
     else:
         raise HTTPException(status_code=404, detail="Transaction not found")
 
-@app.put("/transactions/{transaction_id}")
+@app.put("/transactions/")
 def delete_item(transaction_id: int):
     data = supabase.table("df").delete().eq("transaction_id", transaction_id).execute()
     if data.data:
         return {"message": "Transaction deleted successfully"}
     else:
         raise HTTPException(status_code=404, detail="Transaction not found")
+    
