@@ -24,7 +24,7 @@ class Transaction(BaseModel):
     
 @app.get("/transactions/")
 def read_items():
-    data = supabase.table("df").select("*").order("transaction_id", ascending=False).limit(10).execute()
+    data = supabase.table("df").select("*").order("transaction_id", desc=True).limit(10).execute()
     if data.data:
         return data.data
     else:
