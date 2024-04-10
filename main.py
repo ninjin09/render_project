@@ -11,8 +11,6 @@ supabase: Client = create_client(url, key)
 
 app = FastAPI()
 
-app = FastAPI()
-
 class Transaction(BaseModel):
     transaction_id: int
     transaction_date: datetime
