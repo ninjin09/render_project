@@ -30,7 +30,7 @@ def read_items():
     else:
         raise HTTPException(status_code=404, detail="Transactions not found")
 
-@app.post("/{transaction_id}/")
+@app.post("/transactions/{transaction_id}/")
 def create_transaction(transaction: Transaction):
     transaction.transaction_date = datetime.now().strftime('%Y-%m-%d')
     transaction.transaction_time = datetime.now().strftime('%H:%M:%S')
@@ -40,9 +40,8 @@ def create_transaction(transaction: Transaction):
     else:
         raise HTTPException(status_code=400, detail="Transaction could not be created")
 
-
 @app.put("/transactions/{transaction_id}")
 def update_transaction(transaction_id: int, transaction: Transaction):
     selected_transaction = supabase.table("df").select("*").eq("transaction_id", transaction_id).execute()
-    if not existing_transaction.data:
+    if not selected_transaction.data:
         raise HTTPException(status_code=404, detail="Transaction not found")
