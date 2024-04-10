@@ -34,7 +34,7 @@ def read_items():
 def create_transaction(transaction: Transaction):
     transaction.transaction_date = datetime.now().strftime('%Y-%m-%d')
     transaction.transaction_time = datetime.now().strftime('%H:%M:%S')
-    data = supabase_client.table("df").insert(transaction.dict()).execute()
+    data = supabase.table("df").insert(transaction.dict()).execute()
     if data.data:
         return data.data
     else:
