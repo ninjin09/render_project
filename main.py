@@ -16,11 +16,10 @@ class Transaction(BaseModel):
     transaction_date: datetime
     transaction_time: datetime
     store_id: int
-    product_id: int
     transaction_qty: int
+    unit_price: float
     product_category: str
     product_type: str
-    unit_price: float
     size: str
 
 
