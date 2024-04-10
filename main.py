@@ -1,6 +1,7 @@
 from supabase import create_client, Client
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
+from datetime import datetime
 
 # data from: https://www.kaggle.com/datasets/divu2001/coffee-shop-sales-analysis/data
 
@@ -9,3 +10,27 @@ key: str = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI
 supabase: Client = create_client(url, key)
 
 app = FastAPI()
+
+class Transaction(BaseModel):
+    store_id: int
+    product_id: str
+    transaction_qty: int
+    product_category: str
+    product_type: str
+    unit_price: float
+    total_bill: float
+    size: int
+
+    def calculate_total_bill(self):
+        return self.unit_price * self.transaction_qty
+
+@app.post("/transactions/")
+def create_transaction(transaction: Transaction):
+    transaction.total_bill = transaction.calculate_total_bill()
+    transaction.transaction_date = datetime.now().strftime('%Y-%m-%d')
+    transaction.transaction_time = datetime.now().strftime('%H:%M:%S')
+    data = supabase_client.table("transactions").insert(transaction.dict()).execute()
+    if data["data"]:
+        return data["data"]
+    else:
+        raise HTTPException(status_code=400, detail="Transaction could not be created")
