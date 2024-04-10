@@ -21,6 +21,14 @@ class Transaction(BaseModel):
     product_category: str
     product_type: str
     size: str
+
+class TransactionUpdate(BaseModel):
+    store_id: int
+    transaction_qty: int
+    unit_price: float
+    product_category: str
+    product_type: str
+    size: str
     
 @app.get("/transactions/")
 def read_items():
@@ -40,9 +48,10 @@ def create_transaction(transaction: Transaction):
     else:
         raise HTTPException(status_code=400, detail="Transaction could not be created")
 
+
 @app.put("/transactions/{transaction_id}")
-def update_transaction(transaction_id: int, transaction: Transaction):
-    data = supabase.table("df").update(transaction.dict()).eq("transaction_id", transaction_id).execute()
+def update_transaction(transaction_id: int, update: TransactionUpdate):
+    data = supabase.table("df").update(update.dict()).eq("transaction_id", transaction_id).execute()
     if data.data:
         return data.data
     else:
