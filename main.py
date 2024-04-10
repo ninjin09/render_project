@@ -22,7 +22,7 @@ class Transaction(BaseModel):
     product_type: str
     unit_price: float
     total_bill: float
-    size: int
+    size: str
 
     def calculate_total_bill(self):
         return self.unit_price * self.transaction_qty
