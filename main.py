@@ -28,9 +28,8 @@ class Transaction(BaseModel):
         return self.unit_price * self.transaction_qty
 
 
-@app.post("/transactions/")
+@app.post("/{transaction_id}/")
 def create_transaction(transaction: Transaction):
-    transaction.total_bill = transaction.calculate_total_bill()
     transaction.transaction_date = datetime.now().strftime('%Y-%m-%d')
     transaction.transaction_time = datetime.now().strftime('%H:%M:%S')
     data = supabase.table("transactions").insert(transaction.dict()).execute()
