@@ -11,6 +11,8 @@ supabase: Client = create_client(url, key)
 
 app = FastAPI()
 
+app = FastAPI()
+
 class Transaction(BaseModel):
     transaction_id: int
     transaction_date: datetime
@@ -21,11 +23,7 @@ class Transaction(BaseModel):
     product_category: str
     product_type: str
     unit_price: float
-    total_bill: float
     size: str
-
-    def calculate_total_bill(self):
-        return self.unit_price * self.transaction_qty
 
 
 @app.post("/transaction/")
