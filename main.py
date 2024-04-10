@@ -28,7 +28,7 @@ class Transaction(BaseModel):
         return self.unit_price * self.transaction_qty
 
 
-@app.post("/{transaction_id}/")
+@app.post("/transaction/")
 def create_transaction(transaction: Transaction):
     transaction.transaction_date = datetime.now().strftime('%Y-%m-%d')
     transaction.transaction_time = datetime.now().strftime('%H:%M:%S')
