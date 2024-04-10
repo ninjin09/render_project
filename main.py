@@ -27,7 +27,7 @@ class Transaction(BaseModel):
 def create_transaction(transaction: Transaction):
     transaction.transaction_date = datetime.now().strftime('%Y-%m-%d')
     transaction.transaction_time = datetime.now().strftime('%H:%M:%S')
-    data = supabase.table("transactions").insert(transaction.dict()).execute()
+    data = supabase.table("df").insert(transaction.dict()).execute()
     if data["data"]:
         return data["data"]
     else:
