@@ -24,7 +24,7 @@ class Transaction(BaseModel):
     
 @app.get("/transactions/")
 def read_items():
-    data = supabase.table("df").select("*").order("created_at", ascending=False).limit(10).execute()
+    data = supabase.table("df").select("*").order("transaction_id", ascending=False).limit(10).execute()
     if data.data:
         return data.data
     else:
@@ -32,10 +32,9 @@ def read_items():
 
 @app.post("/{transaction_id}/")
 def create_transaction(transaction: Transaction):
-    transaction.total_bill = transaction.calculate_total_bill()
     transaction.transaction_date = datetime.now().strftime('%Y-%m-%d')
     transaction.transaction_time = datetime.now().strftime('%H:%M:%S')
-    data = supabase_client.table("transactions").insert(transaction.dict()).execute()
+    data = supabase_client.table("df").insert(transaction.dict()).execute()
     if data.data:
         return data.data
     else:
