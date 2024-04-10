@@ -32,7 +32,7 @@ class TransactionUpdate(BaseModel):
 
 @app.get("/transactions/")
 def read_items():
-    data = supabase.table("df").select("*").order("transaction_id", desc=True).limit(10).execute()
+    data = supabase.table("coffee_shop").select("*").order("transaction_id", desc=True).limit(10).execute()
     if data.data:
         return data.data
     else:
@@ -42,7 +42,7 @@ def read_items():
 def create_transaction(transaction: Transaction):
     transaction.transaction_date = datetime.now().strftime('%Y-%m-%d')
     transaction.transaction_time = datetime.now().strftime('%H:%M:%S')
-    data = supabase.table("df").insert(transaction.dict()).execute()
+    data = supabase.table("coffee_shop").insert(transaction.dict()).execute()
     if data.data:
         return data.data
     else:
@@ -50,7 +50,7 @@ def create_transaction(transaction: Transaction):
 
 @app.put("/transactions/{transaction_id}")
 def update_transaction(transaction_id: int, update: TransactionUpdate):
-    data = supabase.table("df").update(update.dict()).eq("transaction_id", transaction_id).execute()
+    data = supabase.table("coffee_shop").update(update.dict()).eq("transaction_id", transaction_id).execute()
     if data.data:
         return data.data
     else:
@@ -58,7 +58,7 @@ def update_transaction(transaction_id: int, update: TransactionUpdate):
 
 @app.delete("/transactions/{transaction_id}")
 def delete_item(transaction_id: int):
-    data = supabase.table("df").delete().eq("transaction_id", transaction_id).execute()
+    data = supabase.table("coffee_shop").delete().eq("transaction_id", transaction_id).execute()
     if data.data:
         return {"message": "Transaction deleted successfully"}
     else:
