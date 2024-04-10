@@ -43,5 +43,7 @@ def create_transaction(transaction: Transaction):
 @app.put("/transactions/{transaction_id}")
 def update_transaction(transaction_id: int, transaction: Transaction):
     data = supabase.table("df").update(transaction.dict()).eq("transaction_id", transaction_id).execute()
-    if not data.data:
+    if data.data:
+        return data.data
+    else:
         raise HTTPException(status_code=404, detail="Transaction not found")
